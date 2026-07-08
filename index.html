@@ -3,402 +3,722 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Alta Via 1 · Dolomites Expedition · Sept 2026</title>
+<title>The Alta Via 1 · Guided Dolomites Traverse · September 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <style>
   :root{
-    --ink:#1c2230; --ink2:#4a5568; --paper:#f7f5f0; --card:#ffffff;
-    --gold:#c98a2b; --gold-deep:#a86c17; --alpine:#2e6b6b; --alpine-deep:#1f4d4d;
-    --rock:#5b6472; --line:#e3ded4; --shadow:0 10px 30px rgba(28,34,48,.10);
+    --ink:#181c24; --ink2:#525b6b; --paper:#f6f3ec; --card:#fffdf9;
+    --gold:#c1852f; --gold-deep:#9a641a; --alpine:#26635f; --alpine-deep:#123a37;
+    --line:#e6e0d3; --shadow:0 18px 50px -18px rgba(24,28,36,.35);
+    --serif:"Fraunces",Georgia,serif; --sans:"Inter",-apple-system,sans-serif;
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
-  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    color:var(--ink);background:var(--paper);line-height:1.6;-webkit-font-smoothing:antialiased}
-  h1,h2,h3{font-weight:800;letter-spacing:-.02em;line-height:1.15;margin:.2em 0}
+  body{margin:0;font-family:var(--sans);color:var(--ink);background:var(--paper);line-height:1.65;-webkit-font-smoothing:antialiased}
+  img{display:block;max-width:100%}
+  h1,h2,h3{font-family:var(--serif);font-weight:900;line-height:1.08;letter-spacing:-.015em;margin:0}
   a{color:var(--gold-deep)}
-  .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
-  .eyebrow{font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+  .eyebrow{font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:14px}
 
-  /* NAV */
-  nav{position:sticky;top:0;z-index:1000;background:rgba(247,245,240,.85);backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--line)}
-  nav .wrap{display:flex;align-items:center;gap:20px;height:58px}
-  nav .brand{font-weight:800;letter-spacing:-.01em}
+  #bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--alpine));z-index:2000}
+  nav{position:sticky;top:0;z-index:1500;background:rgba(246,243,236,.86);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;align-items:center;gap:20px;height:60px}
+  nav .brand{font-family:var(--serif);font-weight:900;font-size:1.05rem}
   nav .links{display:flex;gap:20px;margin-left:auto;flex-wrap:wrap}
-  nav .links a{color:var(--ink2);text-decoration:none;font-size:.86rem;font-weight:600}
+  nav .links a{color:var(--ink2);text-decoration:none;font-size:.83rem;font-weight:600}
   nav .links a:hover{color:var(--gold-deep)}
-  @media(max-width:720px){nav .links{display:none}}
+  nav .cta{background:var(--gold);color:#fff!important;padding:9px 18px;border-radius:999px;font-weight:700}
+  @media(max-width:900px){nav .links a:not(.cta){display:none}}
 
   /* HERO */
-  header.hero{position:relative;overflow:hidden;color:#fff;text-align:center;
-    background:linear-gradient(180deg,#0f2b34 0%,#1f4d4d 45%,#2e6b6b 100%)}
-  header.hero .art{position:absolute;inset:0;width:100%;height:100%}
-  header.hero .inner{position:relative;z-index:2;padding:96px 22px 120px}
-  header.hero h1{font-size:clamp(2.3rem,6vw,4.2rem);color:#fff;text-shadow:0 2px 20px rgba(0,0,0,.25)}
-  header.hero p.sub{font-size:clamp(1rem,2.2vw,1.3rem);opacity:.95;max-width:620px;margin:14px auto 0}
-  .stats{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:34px}
-  .stat{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:14px;
-    padding:14px 20px;min-width:110px;backdrop-filter:blur(4px)}
-  .stat b{display:block;font-size:1.7rem;line-height:1}
-  .stat span{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;opacity:.85}
+  header.hero{position:relative;min-height:90vh;display:flex;align-items:flex-end;color:#fff;overflow:hidden}
+  header.hero .bg{position:absolute;inset:0;background-size:cover;background-position:center;transform:scale(1.05)}
+  header.hero .veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,20,24,.35),rgba(10,20,24,.1) 38%,rgba(10,20,24,.9))}
+  header.hero .inner{position:relative;z-index:2;padding:0 0 54px}
+  header.hero .kick{letter-spacing:.34em;text-transform:uppercase;font-size:.78rem;font-weight:700;color:#ffd9a0;margin-bottom:16px}
+  header.hero h1{font-size:clamp(2.6rem,7vw,5.4rem);text-shadow:0 4px 40px rgba(0,0,0,.4);max-width:15ch}
+  header.hero p.sub{font-size:clamp(1.05rem,2.2vw,1.35rem);max-width:640px;margin:20px 0 0;text-shadow:0 2px 20px rgba(0,0,0,.5)}
+  /* product bar */
+  .pbar{display:flex;flex-wrap:wrap;gap:0;margin-top:32px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);
+    border-radius:16px;backdrop-filter:blur(6px);overflow:hidden}
+  .pbar .c{padding:14px 22px;border-right:1px solid rgba(255,255,255,.18);flex:1;min-width:120px}
+  .pbar .c:last-child{border:none}
+  .pbar .c b{font-family:var(--serif);display:block;font-size:1.3rem;line-height:1}
+  .pbar .c span{font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;opacity:.82;font-weight:600}
+  .pbar .c.price{background:var(--gold)}
+  .btn{display:inline-block;background:var(--gold);color:#fff;text-decoration:none;font-weight:700;padding:14px 30px;
+    border-radius:999px;margin-top:26px;font-size:1rem;box-shadow:0 10px 30px -8px rgba(193,133,47,.7)}
+  .btn.ghost{background:transparent;border:1.5px solid rgba(255,255,255,.6);margin-left:10px}
 
-  /* SECTIONS */
-  section{padding:64px 0;border-bottom:1px solid var(--line)}
-  section h2{font-size:clamp(1.6rem,4vw,2.4rem)}
-  .lead{color:var(--ink2);font-size:1.08rem;max-width:720px}
+  section{padding:84px 0;border-bottom:1px solid var(--line)}
+  section h2{font-size:clamp(1.9rem,4.5vw,3rem);max-width:22ch}
+  .lead{color:var(--ink2);font-size:1.12rem;max-width:680px;margin-top:16px}
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
 
-  /* MAP */
-  #map{height:460px;border-radius:18px;box-shadow:var(--shadow);margin-top:26px;border:1px solid var(--line)}
-  .maphint{color:var(--ink2);font-size:.85rem;margin-top:10px}
+  /* highlight chips */
+  .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
+  .chips span{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:9px 16px;font-size:.82rem;
+    font-weight:600;color:var(--alpine-deep);box-shadow:var(--shadow)}
+  .chips span::before{content:"▲ ";color:var(--gold)}
 
-  /* ITINERARY */
-  .timeline{margin-top:30px;position:relative}
-  .day{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin-bottom:14px;
-    box-shadow:var(--shadow);display:grid;grid-template-columns:70px 1fr;gap:18px;align-items:start}
-  .day .num{background:linear-gradient(160deg,var(--alpine),var(--alpine-deep));color:#fff;border-radius:12px;
-    text-align:center;padding:10px 0}
-  .day .num small{display:block;font-size:.6rem;letter-spacing:.15em;opacity:.8}
-  .day .num b{font-size:1.5rem;line-height:1}
-  .day h3{font-size:1.12rem}
-  .day .tag{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
-    color:var(--gold-deep);background:#faf3e6;border:1px solid #f0e2c4;border-radius:999px;padding:3px 10px;margin-bottom:6px}
-  .day.stage .num{background:linear-gradient(160deg,var(--gold),var(--gold-deep))}
-  .day ul{margin:8px 0 0;padding-left:18px;color:var(--ink2);font-size:.94rem}
-  .day .metrics{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;font-size:.8rem;color:var(--rock);font-weight:600}
-  .day .metrics span{background:#f1efe8;border-radius:8px;padding:4px 10px}
-  .day .note{margin-top:10px;font-style:italic;color:var(--rock);font-size:.9rem}
-  @media(max-width:560px){.day{grid-template-columns:1fr}.day .num{display:inline-block;padding:6px 14px}}
+  /* how it works grid */
+  .how{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px;margin-top:38px}
+  .qa{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:var(--shadow)}
+  .qa .ic{font-size:1.6rem;margin-bottom:10px}
+  .qa h3{font-size:1.15rem;margin-bottom:8px}
+  .qa p{margin:0;color:var(--ink2);font-size:.94rem}
 
-  /* REFUGIO CARDS */
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-top:28px}
-  .ref{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow);
+  #map{height:480px;border-radius:22px;box-shadow:var(--shadow);margin-top:34px;border:1px solid var(--line)}
+  .maphint{color:var(--ink2);font-size:.85rem;margin-top:14px;display:flex;gap:18px;flex-wrap:wrap}
+  .dot{display:inline-flex;align-items:center;gap:7px}.dot i{width:12px;height:12px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px #ccc}
+
+  /* itinerary */
+  .timeline{margin-top:38px;display:flex;flex-direction:column;gap:20px}
+  .day{background:var(--card);border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:var(--shadow);
+    display:grid;grid-template-columns:270px 1fr}
+  .day .photo{position:relative;min-height:230px;background-size:cover;background-position:center}
+  .day .photo .badge{position:absolute;top:14px;left:14px;background:rgba(18,28,26,.75);color:#fff;border-radius:12px;
+    padding:6px 12px;text-align:center;backdrop-filter:blur(4px)}
+  .day .photo .badge small{display:block;font-size:.56rem;letter-spacing:.2em;opacity:.8}
+  .day .photo .badge b{font-family:var(--serif);font-size:1.3rem;line-height:1}
+  .day.nostage{grid-template-columns:1fr}
+  .day .body{padding:24px 28px}
+  .day .tag{display:inline-block;font-size:.64rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--gold-deep);background:#f8efdd;border:1px solid #eeddb9;border-radius:999px;padding:4px 12px;margin-bottom:10px}
+  .day h3{font-size:1.3rem;margin-bottom:8px}
+  .day p.desc{margin:0;color:var(--ink2);font-size:.95rem}
+  .day .stats{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+  .day .stats span{background:#eef2f1;color:var(--alpine-deep);border-radius:9px;padding:5px 11px;font-size:.76rem;font-weight:700}
+  .day .sleepline{margin-top:12px;font-size:.86rem;color:var(--ink);display:flex;gap:18px;flex-wrap:wrap}
+  .day .sleepline b{color:var(--gold-deep)}
+  @media(max-width:680px){.day{grid-template-columns:1fr}.day .photo{min-height:180px}}
+
+  /* where you sleep */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px;margin-top:38px}
+  .ref{background:var(--card);border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:var(--shadow);
+    display:flex;flex-direction:column;transition:transform .3s ease}
+  .ref:hover{transform:translateY(-6px)}
+  .ref .cap{height:180px;background-size:cover;background-position:center;position:relative}
+  .ref .cap .n{position:absolute;top:12px;left:12px;background:rgba(18,28,26,.78);color:#fff;font-size:.7rem;font-weight:700;
+    padding:5px 11px;border-radius:999px;letter-spacing:.03em}
+  .ref .cap .alt{position:absolute;bottom:12px;right:12px;background:rgba(18,28,26,.78);color:#fff;font-size:.72rem;font-weight:700;padding:4px 10px;border-radius:8px}
+  .ref .body2{padding:20px 22px;flex:1;display:flex;flex-direction:column}
+  .ref h3{font-size:1.25rem;margin-bottom:6px}
+  .ref p{font-size:.9rem;color:var(--ink2);margin:0 0 14px}
+  .ref .feat{margin-top:auto;display:flex;gap:8px;flex-wrap:wrap}
+  .ref .feat span{font-size:.72rem;font-weight:700;color:var(--alpine-deep);background:#eef2f1;border-radius:8px;padding:4px 9px}
+
+  /* gallery */
+  .gallery{columns:3;column-gap:16px;margin-top:38px}
+  @media(max-width:820px){.gallery{columns:2}}@media(max-width:520px){.gallery{columns:1}}
+  .shot{break-inside:avoid;margin-bottom:16px;border-radius:16px;overflow:hidden;position:relative;cursor:pointer;box-shadow:var(--shadow)}
+  .shot img{width:100%;transition:transform .5s ease}.shot:hover img{transform:scale(1.06)}
+  .shot .cap{position:absolute;left:0;right:0;bottom:0;padding:26px 16px 14px;color:#fff;font-size:.85rem;font-weight:600;
+    background:linear-gradient(transparent,rgba(10,18,20,.85))}
+  #lb{position:fixed;inset:0;background:rgba(8,12,14,.94);z-index:3000;display:none;align-items:center;justify-content:center;padding:30px;cursor:zoom-out}
+  #lb img{max-width:100%;max-height:88vh;border-radius:10px}
+  #lb .cap{position:absolute;bottom:24px;color:#eee;font-size:.9rem;text-align:center;width:100%}
+
+  /* included / pay */
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:38px}
+  @media(max-width:720px){.two{grid-template-columns:1fr}}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:var(--shadow)}
+  .panel h3{font-size:1.3rem;margin-bottom:16px}
+  .panel ul{list-style:none;padding:0;margin:0}
+  .panel li{font-size:.94rem;padding:7px 0 7px 28px;position:relative;border-bottom:1px solid var(--line)}
+  .panel li:last-child{border:none}
+  .panel.inc li::before{content:"✓";position:absolute;left:0;color:#2e8b57;font-weight:800}
+  .panel.exc li::before{content:"✕";position:absolute;left:2px;color:#c1352a;font-weight:800}
+
+  .pay{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px;margin-top:38px}
+  .step{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:var(--shadow);position:relative}
+  .step .num{width:34px;height:34px;background:var(--alpine);color:#fff;border-radius:50%;display:flex;align-items:center;
+    justify-content:center;font-family:var(--serif);font-weight:700;margin-bottom:12px}
+  .step h3{font-size:1.05rem;margin-bottom:6px}
+  .step p{margin:0;font-size:.88rem;color:var(--ink2)}
+  .note{margin-top:20px;font-size:.82rem;color:var(--ink2);background:#faf5ec;border:1px solid var(--line);border-radius:12px;padding:14px 18px}
+
+  /* dates */
+  .dates{margin-top:38px;display:flex;flex-direction:column;gap:12px}
+  .drow{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);
+    display:flex;align-items:center;gap:20px;padding:18px 24px;flex-wrap:wrap}
+  .drow .d{font-family:var(--serif);font-weight:900;font-size:1.15rem;min-width:210px}
+  .drow .len{color:var(--ink2);font-size:.86rem;font-weight:600}
+  .drow .st{font-size:.7rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:5px 12px;border-radius:999px}
+  .st.limited{background:#fdf0dc;color:#a86c17}
+  .st.last{background:#fae4e0;color:#c1352a}
+  .st.wait{background:#eef2f1;color:var(--alpine-deep)}
+  .drow .pr{margin-left:auto;font-family:var(--serif);font-weight:900;font-size:1.25rem}
+  .drow .pr small{font-family:var(--sans);font-size:.66rem;font-weight:600;color:var(--ink2);letter-spacing:.04em}
+
+  /* flights */
+  table.f{width:100%;border-collapse:collapse;margin-top:26px;font-size:.9rem;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
+  table.f th,table.f td{text-align:left;padding:12px 16px;border-bottom:1px solid var(--line)}
+  table.f th{font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-deep);background:#faf5ec}
+  table.f tr:last-child td{border:none}
+
+  #invite{background:var(--alpine-deep);color:#dcebe8;border:none}
+  #invite .eyebrow{color:#ffd9a0}#invite h2{color:#fff}
+  #invite p{font-size:1.12rem;max-width:760px}
+  #invite .sig{font-family:var(--serif);font-style:italic;font-size:1.25rem;color:#ffd9a0;margin-top:26px}
+  #invite .btn{background:var(--gold)}
+
+  /* OPERATORS */
+  .pick{background:linear-gradient(120deg,var(--alpine),var(--alpine-deep));color:#fff;border-radius:20px;
+    padding:26px 30px;margin-top:34px;box-shadow:var(--shadow)}
+  .pick .lbl{font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:#ffd9a0;font-weight:700}
+  .pick h3{font-size:1.5rem;margin:6px 0 8px;color:#fff}
+  .pick p{margin:0;opacity:.94;font-size:.98rem}
+  .ops{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px;margin-top:22px}
+  .op{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:var(--shadow);
     display:flex;flex-direction:column}
-  .ref .cap{height:96px;position:relative}
-  .ref .cap svg{width:100%;height:100%;display:block}
-  .ref .body{padding:16px 18px;flex:1;display:flex;flex-direction:column}
-  .ref h3{font-size:1.08rem}
-  .ref .meta{font-size:.78rem;color:var(--rock);font-weight:600;margin:2px 0 8px}
-  .ref p{font-size:.88rem;color:var(--ink2);margin:0 0 12px}
-  .pri{font-size:.66rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;
-    padding:3px 9px;display:inline-block;margin-bottom:8px}
-  .pri.p1{background:#fbe4e0;color:#a23327;border:1px solid #f3c3ba}
-  .pri.top{background:#faf0dc;color:#a86c17;border:1px solid #eeddb5}
-  .pri.sec{background:#e7eff0;color:#2e6b6b;border:1px solid #cfe0e0}
-  .ref .links{margin-top:auto;display:flex;gap:10px;flex-wrap:wrap}
-  .ref .links a{font-size:.78rem;font-weight:700;text-decoration:none;color:var(--alpine-deep)}
-
-  /* GALLERY */
-  .gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-top:26px}
-  .shot{aspect-ratio:4/3;border-radius:14px;border:2px dashed #cfc8b8;background:#efece3;display:flex;
-    align-items:center;justify-content:center;text-align:center;color:#9a927f;font-size:.82rem;padding:14px;font-weight:600}
-  .shot span{opacity:.9}
-
-  /* LINKS SECTION */
-  .linkgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-top:26px}
-  .lk{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow)}
-  .lk h3{font-size:1rem;margin-bottom:8px}
-  .lk a{display:block;font-size:.88rem;text-decoration:none;padding:5px 0;color:var(--alpine-deep);font-weight:600}
-  .lk a:hover{color:var(--gold-deep)}
-  .lk a::before{content:"↗";margin-right:7px;opacity:.6}
-
-  /* BUDGET / PACK quick */
-  .cols{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:26px}
-  @media(max-width:640px){.cols{grid-template-columns:1fr}}
-  .panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:var(--shadow)}
-  .panel h3{margin-bottom:6px}
-  .panel ul{padding-left:18px;color:var(--ink2);font-size:.92rem}
-
-  footer{background:#0f2b34;color:#cfe0e0;text-align:center;padding:44px 22px}
-  footer b{color:#fff}
-  .leaflet-popup-content{font-size:.86rem}
-  .leaflet-popup-content b{color:var(--ink)}
+  .op .best{display:inline-block;font-size:.64rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--gold-deep);background:#f8efdd;border:1px solid #eeddb9;border-radius:999px;padding:4px 11px;margin-bottom:10px;align-self:flex-start}
+  .op h3{font-size:1.3rem;margin-bottom:4px}
+  .op .meta{font-size:.8rem;color:var(--ink2);font-weight:600;margin-bottom:12px}
+  .op .why{font-size:.92rem;color:var(--ink2);margin:0 0 14px}
+  .op .specs{list-style:none;padding:0;margin:0 0 16px}
+  .op .specs li{font-size:.84rem;padding:4px 0 4px 20px;position:relative;color:var(--ink)}
+  .op .specs li::before{content:"•";position:absolute;left:4px;color:var(--gold);font-weight:800}
+  .op .specs b{color:var(--ink)}
+  .op a.visit{margin-top:auto;font-weight:700;text-decoration:none;color:var(--alpine);font-size:.9rem}
+  .op a.visit:hover{color:var(--gold-deep)}
+  .subh{font-size:1.45rem;margin-top:44px;margin-bottom:6px}
+  .op .contact{font-size:.86rem;color:var(--ink);margin:0 0 12px;line-height:1.5}
+  .op .contact b{color:var(--gold-deep)}
+  footer{background:#0e2623;color:#bcd4d0;text-align:center;padding:56px 24px}
+  footer .fh{font-family:var(--serif);font-size:1.6rem;color:#fff;margin-bottom:6px}
+  footer .credit{opacity:.5;font-size:.72rem;margin-top:22px;max-width:760px;margin:22px auto 0;line-height:1.5}
+  .leaflet-popup-content{font-family:var(--sans);font-size:.86rem}.leaflet-popup-content b{font-family:var(--serif)}
 </style>
 </head>
 <body>
+<div id="bar"></div>
 
 <nav>
   <div class="wrap">
-    <span class="brand">🏔 Alta Via 1</span>
+    <span class="brand">Alta Via 1</span>
     <div class="links">
-      <a href="#overview">Overview</a>
-      <a href="#map-sec">Map</a>
+      <a href="#how">How it works</a>
       <a href="#itinerary">Itinerary</a>
-      <a href="#refugios">Refugios</a>
-      <a href="#gallery">Gallery</a>
-      <a href="#book">Book &amp; Plan</a>
+      <a href="#sleep">Where you sleep</a>
+      <a href="#included">Included</a>
+      <a href="#dates">Dates</a>
+      <a href="#practical">Good to know</a>
+      <a href="#operators">Operators</a>
+      <a href="#invite" class="cta">Let's go →</a>
     </div>
   </div>
 </nav>
 
 <header class="hero">
-  <svg class="art" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#123540"/><stop offset="1" stop-color="#2e6b6b"/>
-      </linearGradient>
-      <linearGradient id="peakGold" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#f2c37a"/><stop offset="1" stop-color="#c98a2b"/>
-      </linearGradient>
-      <linearGradient id="peakFar" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#6f9b9b"/><stop offset="1" stop-color="#3d6f6f"/>
-      </linearGradient>
-    </defs>
-    <rect width="1200" height="600" fill="url(#sky)"/>
-    <circle cx="930" cy="150" r="60" fill="#ffe9c2" opacity=".55"/>
-    <!-- far ridge -->
-    <path d="M0 430 L140 320 L250 400 L360 300 L480 410 L600 290 L720 400 L860 310 L980 410 L1120 320 L1200 400 L1200 600 L0 600 Z" fill="url(#peakFar)" opacity=".7"/>
-    <!-- gold dolomite towers -->
-    <path d="M0 520 L120 360 L200 470 L300 300 L360 380 L440 250 L520 470 L640 350 L760 480 L880 330 L980 470 L1080 360 L1200 500 L1200 600 L0 600 Z" fill="url(#peakGold)"/>
-    <!-- snow caps -->
-    <path d="M300 300 L330 345 L300 335 L275 350 Z" fill="#fff" opacity=".85"/>
-    <path d="M440 250 L472 300 L440 288 L412 305 Z" fill="#fff" opacity=".85"/>
-    <path d="M880 330 L908 372 L880 362 L855 378 Z" fill="#fff" opacity=".8"/>
-    <!-- pine foreground -->
-    <g fill="#12333a">
-      <path d="M0 600 L0 500 C60 520 120 540 200 545 C320 552 420 560 560 560 C720 560 900 552 1040 545 C1120 540 1160 520 1200 505 L1200 600 Z"/>
-    </g>
-  </svg>
-  <div class="inner">
-    <div class="eyebrow" style="color:#ffe0a8">Dolomites · Italy · September 2026</div>
-    <h1>The Alta Via 1<br>Expedition</h1>
-    <p class="sub">Ten stages. Ten mountain refugios. Lago di Braies to Belluno — the full traverse, on foot, by Darragh &amp; Clodagh Rafferty.</p>
-    <div class="stats">
-      <div class="stat"><b>14</b><span>Total Days</span></div>
-      <div class="stat"><b>10</b><span>Hiking Stages</span></div>
-      <div class="stat"><b>120+</b><span>km Covered</span></div>
-      <div class="stat"><b>9,000+</b><span>m Ascent</span></div>
-      <div class="stat"><b>10</b><span>Refugio Nights</span></div>
+  <div class="bg" id="herobg"></div>
+  <div class="veil"></div>
+  <div class="wrap inner">
+    <div class="kick">Guided Traverse · Dolomites, Italy · September 2026</div>
+    <h1>The Alta Via 1</h1>
+    <p class="sub">The full ten-stage traverse of the Italian Dolomites — guided, hut to hut, no camping, no heavy packs. Just the two of you, a mountain guide, and one of the great walks in the world.</p>
+    <div class="pbar">
+      <div class="c"><b>14</b><span>Days total</span></div>
+      <div class="c"><b>10</b><span>Hiking stages</span></div>
+      <div class="c"><b>120 km</b><span>The full route</span></div>
+      <div class="c"><b>Moderate</b><span>Fit-hiker level</span></div>
+      <div class="c price"><b>From $4,450</b><span>Per person, guided</span></div>
+    </div>
+    <div>
+      <a href="#invite" class="btn">Let's do this →</a>
+      <a href="#how" class="btn ghost">How it works</a>
     </div>
   </div>
 </header>
 
+<!-- OVERVIEW + CHIPS -->
 <section id="overview">
-  <div class="wrap">
-    <div class="eyebrow">01 · The Expedition</div>
-    <h2>A hiking expedition with a little Italy on the side</h2>
-    <p class="lead">The full Alta Via 1 is a north-to-south crossing of the Italian Dolomites — a UNESCO World Heritage landscape of pale limestone towers that turn gold and pink at sunrise and sunset. Ten days walking through the heart of them, sleeping in a different mountain refugio every night, carrying only a light daily pack. Most visitors see the Dolomites from a car window. This is the full traverse.</p>
+  <div class="wrap reveal">
+    <div class="eyebrow">The Trip</div>
+    <h2>Ten days walking through the most beautiful mountains in Europe</h2>
+    <p class="lead">The Alta Via 1 is a north-to-south crossing of the Dolomites — a UNESCO World Heritage landscape of pale limestone towers that turn gold and pink at sunrise and sunset. You sleep in a different mountain refuge every night, each with its own character. A certified guide leads the way, all the logistics are handled, and you carry only a light daypack. Every evening there's a hot dinner, a bed, and a terrace to watch the light go down.</p>
+    <div class="chips">
+      <span>The teal lake of Lago di Braies</span>
+      <span>Sunset & sunrise from Lagazuoi, 2,752 m</span>
+      <span>The five towers of Cinque Torri</span>
+      <span>Cozy rifugios & hearty Italian dinners</span>
+      <span>Lake Coldai beneath Monte Civetta</span>
+      <span>Two nights in Venice</span>
+    </div>
   </div>
 </section>
 
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="wrap reveal">
+    <div class="eyebrow">How a Guided Trip Works</div>
+    <h2>Everything you're wondering, answered</h2>
+    <p class="lead">No tents, no cooking, no route-finding, no booking headaches. Here's exactly what the days feel like.</p>
+    <div class="how">
+      <div class="qa"><div class="ic">🛏️</div><h3>Where you sleep</h3><p>In mountain refugios — warm, characterful huts, not campsites. A mix of cozy shared dorm rooms and, where available, private rooms. Bedding is provided (bring a light liner sheet). Many have hot showers. In Venice and the valley towns you're in comfortable 3-star+ hotels.</p></div>
+      <div class="qa"><div class="ic">🍝</div><h3>Meals & food</h3><p>Half board is included: a proper cooked dinner and breakfast every day at the refugios — pasta, strudel, local wine, espresso on the terrace. Dinners are lively and communal. Lunch is on your own: grab a panino at a hut along the trail or carry a light picnic.</p></div>
+      <div class="qa"><div class="ic">🎒</div><h3>Your bags</h3><p>Your main suitcase stays safely at base (Venice/Cortina) for the trek — most high huts aren't road-accessible, so nobody's luggage goes up there. You carry only a light daypack (~15 lbs) with what you need for the night. It gets reunited with you at the end.</p></div>
+      <div class="qa"><div class="ic">⏰</div><h3>A typical day</h3><p>Relaxed mountain mornings: breakfast around 7:30, on the trail by about 8:30. You walk 4–7 hours with plenty of stops for photos, coffee and lunch, arriving at the next hut mid-afternoon with time to relax before dinner.</p></div>
+      <div class="qa"><div class="ic">👥</div><h3>Group & guide</h3><p>A small group — usually 6 to 12 hikers — led by one certified, English-speaking mountain guide (about a 6:1 ratio). The guide handles navigation, safety, pace, local history and all the day-to-day logistics. Private, just-the-two-of-you departures are also available.</p></div>
+      <div class="qa"><div class="ic">🥾</div><h3>How hard is it?</h3><p>Moderate — any reasonably fit hiker used to multi-day walks can do it. Days are 8–14 km with 500–1,100 m of climbing, at a comfortable pace with plenty of breaks. No via ferrata or technical climbing required — just the ability to walk 4–7 hours a day, several days in a row.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- MAP -->
 <section id="map-sec">
-  <div class="wrap">
+  <div class="wrap reveal">
     <div class="eyebrow">The Route</div>
-    <h2>Interactive trail map</h2>
-    <p class="lead">Every overnight stop from Venice to the finish, north to south. Click a marker for altitude, night number and booking priority.</p>
+    <h2>North to south, Braies to Belluno</h2>
+    <p class="lead">Every overnight from Venice to the finish. Click a marker to see altitude and which night you're there.</p>
     <div id="map"></div>
-    <p class="maphint">🟡 Gold pins = top-priority refugios · 🟢 Teal = route stops · 🔵 Blue = gateway cities. Route line is indicative.</p>
+    <div class="maphint">
+      <span class="dot"><i style="background:#c1852f"></i>Signature stays</span>
+      <span class="dot"><i style="background:#26635f"></i>Mountain refuges</span>
+      <span class="dot"><i style="background:#2b6cb0"></i>Gateway cities</span>
+    </div>
   </div>
 </section>
 
+<!-- ITINERARY -->
 <section id="itinerary">
-  <div class="wrap">
-    <div class="eyebrow">04 · Day by Day</div>
+  <div class="wrap reveal">
+    <div class="eyebrow">Day by Day</div>
     <h2>The 14-day itinerary</h2>
-    <p class="lead">From San Diego to the finish line and back — every day planned.</p>
+    <p class="lead">Two easy days to arrive and acclimatize, ten days on the trail, and a celebration in Venice. Every day shows your walking time, distance, climb, meals and where you sleep.</p>
     <div class="timeline" id="timeline"></div>
   </div>
 </section>
 
-<section id="refugios">
-  <div class="wrap">
-    <div class="eyebrow">05 · Refugio Directory</div>
-    <h2>Ten nights, ten refugios</h2>
-    <p class="lead">Each hut is a complete experience in itself. Booking priority reflects how fast they fill.</p>
+<!-- WHERE YOU SLEEP -->
+<section id="sleep">
+  <div class="wrap reveal">
+    <div class="eyebrow">Your Ten Refuges</div>
+    <h2>Where you'll sleep each night</h2>
+    <p class="lead">Ten mountain huts, each different. Here's what each one is actually like to stay in.</p>
     <div class="grid" id="refgrid"></div>
   </div>
 </section>
 
+<!-- GALLERY -->
 <section id="gallery">
-  <div class="wrap">
-    <div class="eyebrow">10 · Photography</div>
-    <h2>Photo gallery</h2>
-    <p class="lead">The seven shots that matter most. Drop your own photos in here after the trip — replace each slot with an image.</p>
+  <div class="wrap reveal">
+    <div class="eyebrow">The Views</div>
+    <h2>What you'll see</h2>
+    <p class="lead">Real photos of the places you'll walk through. Click any to enlarge.</p>
     <div class="gallery" id="gallery"></div>
   </div>
 </section>
 
-<section id="book">
-  <div class="wrap">
-    <div class="eyebrow">06 &amp; 07 · Book &amp; Plan</div>
-    <h2>Reservations, transport &amp; places</h2>
-    <p class="lead">Direct links to book refugios, trains, Venice stays and the key landmarks. Opens in a new tab.</p>
-    <div class="linkgrid">
-      <div class="lk">
-        <h3>🏔 Refugio booking</h3>
-        <a href="https://www.google.com/search?q=Rifugio+Lagazuoi+booking" target="_blank" rel="noopener">Rifugio Lagazuoi — book first</a>
-        <a href="https://www.google.com/search?q=Rifugio+Nuvolau+booking" target="_blank" rel="noopener">Rifugio Nuvolau</a>
-        <a href="https://www.google.com/search?q=Rifugio+Fanes+Dolomiti+booking" target="_blank" rel="noopener">Rifugio Fanes</a>
-        <a href="https://www.google.com/search?q=Rifugio+Coldai+booking" target="_blank" rel="noopener">Rifugio Coldai</a>
-        <a href="https://www.dolomiti.org/en/refuges" target="_blank" rel="noopener">All Dolomites refuges directory</a>
-      </div>
-      <div class="lk">
-        <h3>🚆 Getting there</h3>
-        <a href="https://www.trenitalia.com/en.html" target="_blank" rel="noopener">Trenitalia — Venice ↔ Dobbiaco</a>
-        <a href="https://www.google.com/search?q=Bus+442+Dobbiaco+Lago+di+Braies+timetable" target="_blank" rel="noopener">Bus 442 — Dobbiaco → Braies</a>
-        <a href="https://www.google.com/flights?q=LAX+to+Venice" target="_blank" rel="noopener">Flights — LAX ↔ Venice (VCE)</a>
-      </div>
-      <div class="lk">
-        <h3>🛏 Venice stays &amp; dining</h3>
-        <a href="https://www.booking.com/city/it/venice.html" target="_blank" rel="noopener">Venice hotels — arrival &amp; celebration nights</a>
-        <a href="https://www.google.com/maps/search/restaurants+near+Venezia+Santa+Lucia" target="_blank" rel="noopener">Restaurants near Santa Lucia station</a>
-        <a href="https://www.google.com/maps/search/celebration+dinner+Belluno" target="_blank" rel="noopener">Belluno — finish-line dinner</a>
-      </div>
-      <div class="lk">
-        <h3>📍 Landmarks &amp; maps</h3>
-        <a href="https://www.google.com/maps/search/Lago+di+Braies" target="_blank" rel="noopener">Lago di Braies</a>
-        <a href="https://www.google.com/maps/search/Cinque+Torri+Dolomites" target="_blank" rel="noopener">Cinque Torri</a>
-        <a href="https://www.google.com/maps/search/Lake+Coldai+Dolomites" target="_blank" rel="noopener">Lake Coldai</a>
-        <a href="https://www.alltrails.com/trail/italy/veneto/alta-via-1" target="_blank" rel="noopener">AllTrails — Alta Via 1</a>
-      </div>
-    </div>
-
-    <div class="cols">
-      <div class="panel">
-        <h3>💶 Budget snapshot</h3>
-        <p style="color:var(--ink2);font-size:.92rem;margin:4px 0 10px">Per person, excluding airfare · target ~$3,500</p>
+<!-- INCLUDED -->
+<section id="included">
+  <div class="wrap reveal">
+    <div class="eyebrow">The Package</div>
+    <h2>What's included — and what's not</h2>
+    <p class="lead">A guided package handles almost everything. Here's exactly where the line falls (typical for a guided full-traverse; confirm details with your chosen operator).</p>
+    <div class="two">
+      <div class="panel inc">
+        <h3>Included</h3>
         <ul>
-          <li>Refugio half board ×10: $900–1,200</li>
-          <li>Venice hotels ×2 nights: $300–600</li>
-          <li>Trains &amp; buses: $75–150</li>
-          <li>Meals outside refugios: $150–250</li>
-          <li>Gear, insurance, incidentals: $350–850</li>
+          <li>Certified English-speaking mountain guide, full traverse</li>
+          <li>All 10 refugio nights, half board (dinner + breakfast)</li>
+          <li>Hotel nights in Venice + valley town at start & finish</li>
+          <li>All refugio & hotel reservations, secured for you</li>
+          <li>Airport transfers (Venice) + transfers to/from trailheads</li>
+          <li>Luggage stored safely at base during the trek</li>
+          <li>Small group (approx. 6–12) with a ~6:1 guide ratio</li>
+          <li>All route logistics, local tourist taxes & VAT</li>
         </ul>
       </div>
-      <div class="panel">
-        <h3>🎒 The ten rules</h3>
+      <div class="panel exc">
+        <h3>Not included</h3>
         <ul>
-          <li>Protect Lagazuoi — book it first, guard it</li>
-          <li>Protect Nuvolau — book immediately after</li>
-          <li>Stay for the Lagazuoi sunrise <em>and</em> sunset</li>
-          <li>Travel light — 18–22 lbs, trail runners</li>
-          <li>Take photos together, not 500 mountain shots</li>
-          <li>Celebrate the finish properly</li>
+          <li>International flights (LAX ⇄ Venice — see below)</li>
+          <li>Lunches, drinks, coffee and snacks on the trail</li>
+          <li>Travel & medical insurance (add at booking)</li>
+          <li>ETIAS authorization & passport</li>
+          <li>Personal hiking gear & broken-in trail shoes</li>
+          <li>Single / private-room supplements where available</li>
+          <li>Guide gratuities (optional)</li>
+          <li>Anything not listed under "Included"</li>
         </ul>
       </div>
     </div>
   </div>
 </section>
 
+<!-- HOW YOU PAY -->
+<section id="pay">
+  <div class="wrap reveal">
+    <div class="eyebrow">How You Pay</div>
+    <h2>Simple, and low-commitment to start</h2>
+    <p class="lead">You don't pay it all at once. This is how guided-tour booking typically works.</p>
+    <div class="pay">
+      <div class="step"><div class="num">1</div><h3>Reserve your spot</h3><p>Put down a deposit — usually about 30% — to lock your dates and your refugio beds. This is the move that secures everything.</p></div>
+      <div class="step"><div class="num">2</div><h3>48-hour grace</h3><p>Change your mind in the first 48 hours after booking and get a full refund, no questions asked.</p></div>
+      <div class="step"><div class="num">3</div><h3>Balance later</h3><p>The remaining balance is due about 90 days before departure — not now. If you book inside 90 days, it's paid in full at booking.</p></div>
+      <div class="step"><div class="num">4</div><h3>Flexibility options</h3><p>Most operators offer Basic / Flexible / Super-Flexible cancellation tiers at checkout, plus optional travel insurance.</p></div>
+    </div>
+    <div class="note">These are typical guided-operator terms (modeled on standard Dolomites tour policies) to show how it works — your exact deposit, balance date and refund terms are confirmed by the operator you book with.</div>
+  </div>
+</section>
+
+<!-- DATES -->
+<section id="dates">
+  <div class="wrap reveal">
+    <div class="eyebrow">Dates & Availability</div>
+    <h2>Target September 2026 departures</h2>
+    <p class="lead">These are the departure windows that fit your plan. September is the sweet spot — fewer crowds, cooler days, golden autumn light. Availability this close is limited; a deposit is what holds a spot.</p>
+    <div class="dates">
+      <div class="drow"><div class="d">Sep 5 – Sep 18, 2026</div><div class="len">14 days · full traverse</div><div class="st limited">Limited spots</div><div class="pr">$4,450<small> / person</small></div></div>
+      <div class="drow"><div class="d">Sep 12 – Sep 25, 2026</div><div class="len">14 days · full traverse</div><div class="st last">Last spots</div><div class="pr">$4,450<small> / person</small></div></div>
+      <div class="drow"><div class="d">Sep 19 – Oct 2, 2026</div><div class="len">14 days · full traverse</div><div class="st wait">Waitlist / inquire</div><div class="pr">$4,450<small> / person</small></div></div>
+    </div>
+    <div class="note">Dates and pricing are indicative target windows to confirm live with an operator — availability for September 2026 is closing fast, and several operators' dates are already sold out. The private, just-the-two-of-you option can often run on dates of your choosing.</div>
+  </div>
+</section>
+
+<!-- FLIGHTS -->
+<section id="flights">
+  <div class="wrap reveal">
+    <div class="eyebrow">Getting There</div>
+    <h2>Flights: LAX ⇄ Venice</h2>
+    <p class="lead">No nonstop between Los Angeles and Venice — every routing takes one connection through a European hub. Minimum travel time ~13h50m. Book 2–4 months out.</p>
+    <table class="f">
+      <tr><th>Cabin</th><th>Round-trip / person (Sept 2026)</th><th>Best hubs</th></tr>
+      <tr><td>Economy</td><td>~$700 – $1,300</td><td>Munich (Lufthansa), Zurich (SWISS)</td></tr>
+      <tr><td>Premium Economy</td><td>~$1,800 – $2,700</td><td>Paris (Air France), Amsterdam (KLM/Delta)</td></tr>
+      <tr><td>Business</td><td>~$3,500 – $7,500</td><td>Frankfurt / Rome (Lufthansa / ITA)</td></tr>
+    </table>
+    <p class="lead" style="margin-top:18px"><strong>Also check:</strong> <strong>ETIAS</strong> — the EU's new travel authorization may be required for US visitors in 2026 (quick online form). Chase Sapphire Reserve points could cover much of the economy airfare on this timeline.</p>
+    <p style="margin-top:10px"><a href="https://www.google.com/travel/flights?q=LAX+to+Venice+September+2026" target="_blank" rel="noopener" style="font-weight:700">Search live LAX ⇄ VCE fares →</a></p>
+  </div>
+</section>
+
+<!-- PRACTICAL -->
+<section id="practical">
+  <div class="wrap reveal">
+    <div class="eyebrow">Good to Know</div>
+    <h2>Getting to the trail, weather, bags &amp; food</h2>
+
+    <h3 class="subh">Getting from Venice to the start</h3>
+    <p class="lead">The trail begins at Lago di Braies. There's no single direct train — it's a scenic train plus a couple of buses, about 5.5–6.5 hours total. Two good routes:</p>
+    <table class="f">
+      <tr><th>Route</th><th>The legs</th><th>Time · cost</th></tr>
+      <tr><td><b>Via Cortina</b> (most scenic)</td><td>Train Venezia Santa Lucia → Calalzo di Cadore · Bus 30 → Cortina · Bus 445 → Dobbiaco · Bus 442 → Lago di Braies</td><td>~5.5–6.5 h · ≈€30–50 pp</td></tr>
+      <tr><td><b>Via Fortezza</b> (more train, less bus)</td><td>Train Venezia → Fortezza/Franzensfeste (1 change) → Dobbiaco or Villabassa · Bus 442 → Lago di Braies</td><td>~6–7 h · ≈€40–60 pp</td></tr>
+    </table>
+    <p style="margin-top:16px"><b>Buying tickets:</b> trains on the <b>Trenitalia</b> app or at any station machine (regional trains need no seat reservation, just buy same-day or ahead). Buses on the <b>südtirolmobil / SAD</b> app or from machines. The final leg, <b>Bus 442</b>, runs about every 30 minutes from Dobbiaco bus station; the first one leaves around 07:01.</p>
+    <div class="note" style="border-left:4px solid #c1352a"><b>⚠️ Important for a September start:</b> from <b>1 July – 15 September</b> the road to Lago di Braies is restricted. The bus to the lake (routes 439/442) must be <b>pre-booked and pre-paid online</b>, and the lake is only reachable <b>09:30–16:00</b> by public transport. There's a <b>€44 combined ticket</b> (full-day transit permit + guaranteed parking + a €22 restaurant/shop voucher). Start <b>after 15 September</b> and you can simply pay cash on the bus. Book at <a href="https://www.prags.bz/en" target="_blank" rel="noopener">prags.bz</a>.</div>
+    <p><b>Do packages cover the transfer?</b> Guided tours usually include a transfer from a set meeting point (often Venice airport) plus trailhead transfers, and they'll sort the Braies access for you. Self-guided packages normally give detailed travel instructions and sometimes an arrival transfer as a paid add-on — otherwise you make your own way to the start. Always confirm the first-day transfer when you book.</p>
+
+    <h3 class="subh">Weather in September</h3>
+    <p class="lead">September is arguably the best month on the AV1 — thinning crowds, golden light, sharp visibility and fewer thunderstorms than midsummer. But it's mountain weather: be ready for anything in a day.</p>
+    <div class="how">
+      <div class="qa"><div class="ic">☀️</div><h3>Daytime</h3><p>Roughly <b>10–18°C</b> (50–64°F) at hiking elevations — pleasant walking in the sun, cool in shade or wind. Lower humidity than summer means crisp, clear views.</p></div>
+      <div class="qa"><div class="ic">❄️</div><h3>Nights & altitude</h3><p>Cold once the sun drops — nights can fall <b>below freezing above 2,000 m</b>. The high huts (Lagazuoi, Nuvolau) are chilly, so pack warm layers and a hat even in "summer."</p></div>
+      <div class="qa"><div class="ic">🌦️</div><h3>Conditions</h3><p>Changeable: cool sun, cloud and passing showers, with occasional heavier rain when a front comes through. A brief dusting of snow high up is possible but usually melts within a day.</p></div>
+      <div class="qa"><div class="ic">📅</div><h3>Best window</h3><p><b>Early September</b> tends to be the most stable — huts still fully open and staffed, crowds easing off. A rain shell and warm layer make almost any day workable.</p></div>
+    </div>
+
+    <h3 class="subh">Your bags — and what's in them</h3>
+    <div class="two">
+      <div class="panel">
+        <h3>How many bags?</h3>
+        <p style="color:var(--ink2);font-size:.95rem">Just two, each:</p>
+        <ul style="list-style:none;padding:0;margin:12px 0 0">
+          <li style="padding:8px 0;border-bottom:1px solid var(--line)"><b>1 backpack (35–45L)</b> — carried the whole trek, ~8–10 kg / 18–22 lbs. This is everything you need hut to hut.</li>
+          <li style="padding:8px 0"><b>1 small duffel or case</b> — left at your Venice/Cortina base for the city days. You don't take it on the trail (the high huts aren't road-accessible).</li>
+        </ul>
+        <p style="color:var(--ink2);font-size:.9rem;margin-top:12px">Huts provide blankets and pillows — you just bring a lightweight <b>sleeping-bag liner</b>. No tent, stove or food needed.</p>
+      </div>
+      <div class="panel">
+        <h3>What goes in the pack</h3>
+        <ul style="columns:2;column-gap:22px;padding-left:18px;color:var(--ink2);font-size:.9rem;margin:0">
+          <li>Rain shell (waterproof)</li>
+          <li>Light down/puffy jacket</li>
+          <li>Base + mid layers</li>
+          <li>2–3 hiking shirts</li>
+          <li>Hiking pants/shorts</li>
+          <li>Trail runners (broken in)</li>
+          <li>Camp shoes/sandals</li>
+          <li>Hat, beanie, gloves</li>
+          <li>Sleeping-bag liner</li>
+          <li>Trekking poles</li>
+          <li>Headlamp</li>
+          <li>Battery bank + Type-L/C adapter</li>
+          <li>2L water</li>
+          <li>Sunscreen + sunglasses</li>
+          <li>Blister/first-aid kit</li>
+          <li>Earplugs (dorms!)</li>
+          <li>Small towel + toiletries</li>
+          <li>Passport, cash (EUR), confirmations</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 class="subh">Food &amp; eating</h3>
+    <div class="how">
+      <div class="qa"><div class="ic">🍝</div><h3>Dinner & breakfast</h3><p>Half board at the refugios is the highlight — a hearty multi-course dinner (soup or antipasto, pasta or polenta, a meat/veg main, dessert) and a simple breakfast. Try the local dishes: <em>canederli</em> (dumplings), <em>casunziei</em>, strudel, speck and polenta.</p></div>
+      <div class="qa"><div class="ic">🥪</div><h3>Lunch on the trail</h3><p>Not included — and easy. Buy a panino, cake and coffee at a hut you pass (≈€8–15), or carry a light picnic. The mid-morning coffee-and-strudel stop is half the fun of the day.</p></div>
+      <div class="qa"><div class="ic">🍷</div><h3>Venice & the finish</h3><p>In Venice, skip the tourist traps by the station and find a <em>bàcaro</em> for cicchetti and an <em>ombra</em> (small glass of wine). Save room for a proper celebration dinner in Venice or Belluno at the end.</p></div>
+      <div class="qa"><div class="ic">💧</div><h3>Water & drinks</h3><p>Refill at huts and fountains along the way (carry ~2L). Refugios have a bar for beer, wine and coffee — bring some euros in cash, as card coverage can be patchy high up.</p></div>
+    </div>
+    <p style="margin-top:16px"><a href="https://www.google.com/maps/search/bacaro+cicchetti+Venezia+Santa+Lucia" target="_blank" rel="noopener" style="font-weight:700">Cicchetti bars near Santa Lucia →</a> &nbsp;·&nbsp; <a href="https://www.google.com/maps/search/restaurants+Belluno+centro" target="_blank" rel="noopener" style="font-weight:700">Belluno finish-line dinner →</a></p>
+  </div>
+</section>
+
+<!-- OPERATORS -->
+<section id="operators">
+  <div class="wrap reveal">
+    <div class="eyebrow">Who to Book With</div>
+    <h2>Go direct with a local guide — or use a package</h2>
+    <p class="lead">You had the right instinct: the big-name companies carry an agency markup. The AV1 is a well-marked, non-technical trail, so you can hire an independent local guide directly — or skip a full-time guide altogether — and often pay less for a more personal trip. Here's the honest money picture first, then real people you can email.</p>
+
+    <table class="f">
+      <tr><th>How you do it</th><th>Guide</th><th>≈ Per person, excl. flights</th><th>What it's like</th></tr>
+      <tr><td><b>DIY — book huts yourself</b></td><td>None</td><td>$1,400 – 2,000</td><td>Cheapest. You reserve everything; the trail is well-marked.</td></tr>
+      <tr><td><b>Self-guided package</b></td><td>None</td><td>$1,900 – 2,600</td><td>An operator books huts + hotels; you walk on your own.</td></tr>
+      <tr><td><b>Direct guide + 2–4 friends</b></td><td>Independent, shared</td><td>$2,400 – 3,200</td><td>Best value with a guide — the day rate splits across more people.</td></tr>
+      <tr><td><b>Direct private guide, just the two of us</b></td><td>Independent, private</td><td>$3,600 – 4,400</td><td>Private, fully custom, no agency markup — but the guide's flat rate splits only two ways.</td></tr>
+      <tr><td><b>Small-group package (corporate)</b></td><td>Included</td><td>$3,500 – 4,800</td><td>Turnkey, but you're in a group of 8–12.</td></tr>
+      <tr><td><b>Luxury private (Dolomite Mtns)</b></td><td>Included</td><td>$6,000 – 9,000+</td><td>White-glove, upgraded hotels & rooms.</td></tr>
+    </table>
+    <div class="note"><b>The honest catch:</b> a private guide for just the two of us isn't dramatically cheaper than a group package — an independent guide charges a flat ~€420/day (≈$460) for the whole party, split only two ways over ~11 days. Going direct really wins if we (a) add a couple of friends to split the guide, or (b) go self-guided/DIY, since the AV1 doesn't require a daily guide. If we do want a private guide, booking one directly still beats a luxury agency on price and gives us a trip built just for us. Hut half-board runs ≈€70–90 per night each.</div>
+
+    <h3 class="subh">Real guides you can contact directly</h3>
+    <div class="ops">
+      <div class="op">
+        <span class="best">Local association · AV1 heartland</span>
+        <h3>Guide Alpine Cortina</h3>
+        <div class="meta">~30 certified guides & mountain leaders</div>
+        <p class="why">The historic Cortina guides' association, right in the middle of the route. Ask for a <b>medium-mountain leader (UIMLA)</b> for a hut-to-hut trek — cheaper than a full alpine guide, and all you need for the AV1.</p>
+        <p class="contact"><b>Call:</b> +39 0436 868505<br><b>Where:</b> Corso Italia 69/a, Cortina d'Ampezzo</p>
+        <a class="visit" href="https://guidecortina.com/en/" target="_blank" rel="noopener">guidecortina.com →</a>
+      </div>
+      <div class="op">
+        <span class="best">Published day rates (transparent)</span>
+        <h3>Guide Dolomiti</h3>
+        <div class="meta">Cortina mountain guides · rates online</div>
+        <p class="why">One of the few that lists prices publicly — about <b>€420/day for a multi-day hut-to-hut trek</b> (up to ~5 people; you cover the guide's hut board, shared). Email them for a private AV1 quote.</p>
+        <p class="contact"><b>Rates page is public</b> — a good number to benchmark every other quote against.</p>
+        <a class="visit" href="https://www.guidedolomiti.com/en/rates/" target="_blank" rel="noopener">guidedolomiti.com/rates →</a>
+      </div>
+      <div class="op">
+        <span class="best">Browse & book independent guides</span>
+        <h3>Explore-Share</h3>
+        <div class="meta">Marketplace of certified local guides</div>
+        <p class="why">See individual guides' profiles, reviews and credentials, message them directly and agree a custom AV1 itinerary. Far less overhead than a full tour agency, still fully vetted.</p>
+        <p class="contact"><b>Tip:</b> filter for Dolomites / hut-to-hut and request a private full-traverse quote from 2–3 guides.</p>
+        <a class="visit" href="https://www.explore-share.com/hiking-trips/italy/dolomites/" target="_blank" rel="noopener">explore-share.com →</a>
+      </div>
+    </div>
+
+    <div class="pick">
+      <div class="lbl">★ Best fit for just the two of us</div>
+      <h3>A self-guided package</h3>
+      <p>For two independent hikers this is the sweet spot. An operator books every refugio and hotel, sorts the tricky Lago di Braies access, and hands you the route on a GPS app — then you walk the trail alone, at your own pace, for roughly half the price of a guided group. If we'd rather have a guide, we hire one directly (above) or use Mont Trekking for a private full traverse.</p>
+    </div>
+
+    <h3 class="subh">The four I'd actually book for two</h3>
+    <div class="ops">
+      <div class="op">
+        <span class="best">★ Top pick · self-guided, best value</span>
+        <h3>Macs Adventure</h3>
+        <div class="meta">Big, well-established · app-based</div>
+        <p class="why">Everything booked, then just the two of us on the trail with a GPS app guiding each day. The "Classic" covers most of the route; "in Comfort" upgrades the hotels. Excellent for independent hikers.</p>
+        <ul class="specs">
+          <li><b>Group:</b> just the two of us</li>
+          <li><b>Route:</b> Classic ≈ most of AV1 (or custom)</li>
+          <li><b>Price:</b> ~$1,900–2,600 pp</li>
+          <li><b>Huts:</b> refugios + valley hotels</li>
+        </ul>
+        <a class="visit" href="https://www.macsadventure.com/us/tour-1706/dolomites-alta-via-1-classic/" target="_blank" rel="noopener">View Macs Adventure AV1 →</a>
+      </div>
+
+      <div class="op">
+        <span class="best">Self-guided · personal service, full route</span>
+        <h3>Alpine Exploratory</h3>
+        <div class="meta">AV1 specialist · detailed route notes</div>
+        <p class="why">A smaller, walker-run outfit that does the <b>full 10-day traverse</b> self-guided, with hands-on personal support and thorough day-by-day notes. Great if we want the complete route without a guide.</p>
+        <ul class="specs">
+          <li><b>Group:</b> just the two of us</li>
+          <li><b>Route:</b> full AV1, 9–10 days</li>
+          <li><b>Price:</b> mid self-guided range</li>
+          <li><b>Huts:</b> refugios + hotels, all booked</li>
+        </ul>
+        <a class="visit" href="https://www.alpineexploratory.com/holidays/dolomites-alta-via-1.html" target="_blank" rel="noopener">View Alpine Exploratory AV1 →</a>
+      </div>
+
+      <div class="op">
+        <span class="best">If we want a private guide (full traverse)</span>
+        <h3>Mont Trekking</h3>
+        <div class="meta">Local Italian operator · 9–11 day AV1</div>
+        <p class="why">The most realistic way to walk the <b>complete</b> Braies-to-Belluno route <em>with</em> a guide — as a private trip for the two of us, at friendlier prices than the luxury houses.</p>
+        <ul class="specs">
+          <li><b>Group:</b> private for two (or small group ≤7)</li>
+          <li><b>Route:</b> full traverse, 9/10/11-day</li>
+          <li><b>Price:</b> mid-range (contact for quote)</li>
+          <li><b>Huts:</b> manned refugios, half board</li>
+        </ul>
+        <a class="visit" href="https://monttrekking.com/tour/alta_via_n1_dolomites.php" target="_blank" rel="noopener">View Mont Trekking AV1 →</a>
+      </div>
+
+      <div class="op">
+        <span class="best">If we want a guided group, booked in minutes</span>
+        <h3>57hours</h3>
+        <div class="meta">Transparent pricing · guides via Dolomite Mtns</div>
+        <p class="why">The clearest, easiest booking of the lot — dates, price and a 48-hour free-cancel deposit all upfront. Note it's a 6-day <em>highlights</em> version, not the full traverse, but the reviews are excellent.</p>
+        <ul class="specs">
+          <li><b>Group:</b> small, ~6:1 ratio, max 12</li>
+          <li><b>Route:</b> 6-day highlights (Fanes–Lagazuoi)</li>
+          <li><b>Price:</b> from ~$2,940 pp (published)</li>
+          <li><b>Huts:</b> 3-star hotel + dorm huts</li>
+        </ul>
+        <a class="visit" href="https://57hours.com/premium-adventures/hiking-tour-alta-via-italy/" target="_blank" rel="noopener">View 57hours AV1 →</a>
+      </div>
+    </div>
+    <div class="note">Prices, group sizes and route lengths are from each operator's public listings and third-party reviews (Trustpilot, Tripadvisor, 57hours) as of mid-2026; exact 2026 prices, dates and availability are confirmed on inquiry. Because it's late in the season, contact 2–3 this week and ask specifically about remaining September departures and whether they cover the Lago di Braies access.</div>
+  </div>
+</section>
+
+<!-- INVITE -->
+<section id="invite">
+  <div class="wrap reveal">
+    <div class="eyebrow">For Clodagh</div>
+    <h2>This is the one, and it's this September</h2>
+    <p>Clodagh — picture this: ten days walking through the most beautiful mountains in Europe, a different cozy hut every night, dinner poured and waiting, the two of us on a summit terrace at golden hour. No tents, no cooking, no heavy packs — just the walking, the views, and the best food and wine in the Alps at the end of each day.</p>
+    <p style="margin-top:14px">And the best part: we don't plan a thing. A guide and operator handle every hut, hotel, transfer and reservation. We just pick a September date, put down a deposit, and book our flights. Everything else takes care of itself.</p>
+    <p style="margin-top:14px">The only catch is time — it's July, the trip is this September, and the good dates are going fast. Let's not let this be the trip we <em>almost</em> took.</p>
+    <p class="sig">Say the word and I'll get us booked. — Darragh</p>
+    <a href="#dates" class="btn">See the September dates →</a>
+  </div>
+</section>
+
 <footer>
-  <p><b>Alta Via 1 · Dolomites Expedition</b></p>
-  <p>Lago di Braies → Belluno · September 2026 · Darragh &amp; Clodagh Rafferty</p>
-  <p style="opacity:.6;font-size:.8rem;margin-top:14px">Two experienced hikers. Ten stages. One of the great walks in the world.</p>
+  <div class="fh">Lago di Braies → Belluno</div>
+  <p>The Alta Via 1 · Full guided traverse · September 2026 · Darragh &amp; Clodagh Rafferty</p>
+  <p class="credit">Prices, dates and inclusions are indicative and modeled on typical guided Dolomites operators (Alpenwild, 57hours, Mont Trekking, Dolomite Mountains, Macs Adventure); confirm all details live with your chosen operator. Photography © Wikimedia Commons contributors under Creative Commons licences (CC BY-SA), for personal, non-commercial planning. Base map © OpenStreetMap, tiles © CARTO.</p>
 </footer>
+
+<div id="lb"><img id="lbimg" alt=""><div class="cap" id="lbcap"></div></div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-/* ---------- DATA ---------- */
-const days = [
-  {n:1, tag:"Departure", title:"San Diego → Europe", items:["Coronado → LA → overnight flight","One connection max — arrive with energy"]},
-  {n:2, tag:"Arrival", title:"Venice · Recovery Day", items:["Land at Venice Marco Polo","Rest, canals, espresso, early dinner"]},
-  {n:3, tag:"Transit", title:"Venice → Lago di Braies", items:["Train Venice → Dobbiaco (~3h)","Bus 442 → Lago di Braies","Evening walk around the teal lake"]},
-  {n:4, stage:1, tag:"Stage 1", title:"Lago di Braies → Rifugio Biella", km:14, up:1100, dn:500, items:["The official start of the AV1","Steady climb through forest &amp; meadow"], note:"First night in a genuine mountain refugio."},
-  {n:5, stage:2, tag:"Stage 2", title:"Rifugio Biella → Rifugio Fanes", km:12, up:700, dn:900, items:["Through Fanes-Senes-Braies Nature Park","Open plateau, big-sky views"], note:"Fanes is a highlight — protect this booking."},
-  {n:6, stage:3, tag:"Stage 3", title:"Rifugio Fanes → Rifugio Lagazuoi", km:11, up:900, dn:400, items:["Ascent to the high point of the route","Lagazuoi sits at 2,752 m"], note:"THE most important night of the trip."},
-  {n:7, stage:4, tag:"Stage 4", title:"Rifugio Lagazuoi → Rifugio Nuvolau", km:13, up:600, dn:900, items:["Descend through legendary Cinque Torri","Nuvolau perches on a pointed summit"], note:"The most iconic refugio location on the AV1."},
-  {n:8, stage:5, tag:"Stage 5", title:"Rifugio Nuvolau → Città di Fiume", km:12, up:500, dn:1100, items:["Into the Zoldana Valley","Rest-day character — recover for the south"]},
-  {n:9, stage:6, tag:"Stage 6", title:"Città di Fiume → Rifugio Coldai", km:13, up:1100, dn:400, items:["A significant climb — a harder day","Arrive beside jewel-like Lake Coldai"], note:"Pelmo dominates the horizon."},
-  {n:10, stage:7, tag:"Stage 7", title:"Rifugio Coldai → Rifugio Vazzoler", km:11, up:400, dn:1200, items:["Long descent toward Civetta","Forested, sheltered character"]},
-  {n:11, stage:8, tag:"Stage 8", title:"Rifugio Vazzoler → Carestiato", km:10, up:700, dn:600, items:["A shorter, relaxed stage","Quiet, well-run refugio"]},
-  {n:12, stage:9, tag:"Stage 9", title:"Rifugio Carestiato → Pramperet", km:12, up:800, dn:700, items:["The penultimate stage","Remote &amp; character-rich — the route becomes yours"]},
-  {n:13, stage:10, tag:"Stage 10", title:"Pramperet → Finish + Travel South", items:["Final descent to the Belluno region","The finish-line photograph","Connections back toward Venice"], note:"Every step of the previous nine stages led here."},
-  {n:14, tag:"Celebration", title:"Venice · Departure", items:["A proper celebration dinner","Evening flight back toward home"], note:"Venice on Day 14 hits differently."}
+const FP="https://commons.wikimedia.org/wiki/Special:FilePath/";
+const w=(n,px=1200)=>FP+encodeURIComponent(n)+"?width="+px;
+const IMG={
+  braies:w("Lago di Braies South Tyrol 6.jpg",1800),
+  lagazuoi:w("Rifugio Lagazuoi ( Lagazoi) 2752m View from Cortina - panoramio.jpg"),
+  cinque:w("Cinque Torri, Dolomites - panoramio (1).jpg"),
+  nuvolau:w("Rifugio Nuvolau Dolomiti.JPG"),
+  pelmo:w("Monte Pelmo 3168 m, 2015-11-04.jpg"),
+  civetta:w("Monte Civetta.jpg"),
+  coldai:w("Lago Coldai (237636394).jpg"),
+  fanes:w("Alpe di Fanes con ruscello.jpg"),
+  venice:w("Venice Gondola Grand Canal.jpg")
+};
+document.getElementById("herobg").style.backgroundImage=`url("${w("Lago di Braies South Tyrol 6.jpg",2000)}")`;
+
+const days=[
+  {n:1,tag:"Arrive",img:IMG.venice,title:"Fly to Venice",desc:"Overnight flight from LAX via a European hub. One connection maximum — arrive with energy for the days ahead.",sleep:"Overnight · in transit"},
+  {n:2,tag:"Recovery",img:IMG.venice,title:"Venice — rest & acclimatize",desc:"Land at Venice Marco Polo, transfer to your hotel, and take it easy — canals, espresso, an early dinner. One quality day, not a tour.",meals:"Dinner",sleep:"Hotel in Venice"},
+  {n:3,tag:"Transfer",img:IMG.braies,title:"North to Lago di Braies",desc:"Travel north into the mountains and arrive at the iconic teal lake that marks the start of the Alta Via 1. Evening stroll around the water.",meals:"Breakfast, dinner",sleep:"Hotel at Lago di Braies"},
+  {n:4,stage:1,tag:"Stage 1",img:IMG.braies,title:"Lago di Braies → Rifugio Biella",desc:"The official start. A steady climb from the lake through forest and open meadow to your first mountain hut, high above the valley.",hrs:"~6 h",km:14,up:1100,dn:500,meals:"Breakfast, dinner",sleep:"Rifugio Biella · 2,327 m"},
+  {n:5,stage:2,tag:"Stage 2",img:IMG.fanes,title:"Rifugio Biella → Rifugio Fanes",desc:"Cross the wide, beautiful Fanes plateau — big-sky meadow walking — to one of the best-loved refuges on the whole route, famous for its food.",hrs:"~5 h",km:12,up:700,dn:900,meals:"Breakfast, dinner",sleep:"Rifugio Fanes · 2,060 m"},
+  {n:6,stage:3,tag:"Stage 3",img:IMG.lagazuoi,title:"Rifugio Fanes → Rifugio Lagazuoi",desc:"Climb to the high point of the entire route. Your hut sits right on the summit at 2,752 m — and the sunset and sunrise from here are the best of the trip.",hrs:"~5 h",km:11,up:900,dn:400,meals:"Breakfast, dinner",sleep:"Rifugio Lagazuoi · 2,752 m"},
+  {n:7,stage:4,tag:"Stage 4",img:IMG.cinque,title:"Rifugio Lagazuoi → Rifugio Nuvolau",desc:"Descend through the legendary Cinque Torri — five rock towers rising from a meadow — to a tiny stone hut perched dramatically on a pointed summit.",hrs:"~6 h",km:13,up:600,dn:900,meals:"Breakfast, dinner",sleep:"Rifugio Nuvolau · 2,575 m"},
+  {n:8,stage:5,tag:"Stage 5",img:IMG.pelmo,title:"Rifugio Nuvolau → Città di Fiume",desc:"Drop out of the high central section into quieter valley country, with the great peak of Pelmo coming into view. A gentler, restful day.",hrs:"~5 h",km:12,up:500,dn:1100,meals:"Breakfast, dinner",sleep:"Rifugio Città di Fiume · 1,918 m"},
+  {n:9,stage:6,tag:"Stage 6",img:IMG.coldai,title:"Città di Fiume → Rifugio Coldai",desc:"A bigger climbing day, rewarded by one of the loveliest settings on the route — a jewel-blue lake beneath the wall of Monte Civetta.",hrs:"~6–7 h",km:13,up:1100,dn:400,meals:"Breakfast, dinner",sleep:"Rifugio Coldai · 2,191 m"},
+  {n:10,stage:7,tag:"Stage 7",img:IMG.civetta,title:"Rifugio Coldai → Rifugio Vazzoler",desc:"A long, scenic descent beneath the enormous northwest face of Civetta into more sheltered, forested country. A warm, relaxed night.",hrs:"~5 h",km:11,up:400,dn:1200,meals:"Breakfast, dinner",sleep:"Rifugio Vazzoler · 1,714 m"},
+  {n:11,stage:8,tag:"Stage 8",img:IMG.pelmo,title:"Rifugio Vazzoler → Carestiato",desc:"A shorter, easier stage through the quieter southern Dolomites. Time to slow down and enjoy a friendly, well-run hut.",hrs:"~4–5 h",km:10,up:700,dn:600,meals:"Breakfast, dinner",sleep:"Rifugio Carestiato · 1,834 m"},
+  {n:12,stage:9,tag:"Stage 9",img:IMG.civetta,title:"Rifugio Carestiato → Pramperet",desc:"The penultimate day, through remote and characterful country where few hikers venture. The finish is now on the horizon.",hrs:"~5–6 h",km:12,up:800,dn:700,meals:"Breakfast, dinner",sleep:"Rifugio Pramperet · 1,857 m"},
+  {n:13,stage:10,tag:"Stage 10",img:IMG.cinque,title:"Pramperet → Finish → Venice",desc:"The final descent to the Belluno region and your finish-line photo, then transfer back toward Venice. You've walked the whole thing.",hrs:"~5 h",meals:"Breakfast",sleep:"Hotel in Venice"},
+  {n:14,tag:"Celebrate",img:IMG.venice,title:"Venice — celebration & departure",desc:"One last day in Venice and a proper celebration dinner before your flight home. Venice on Day 14 hits differently.",meals:"Breakfast",sleep:"Fly home"}
 ];
 
-const refugios = [
-  {name:"Rifugio Biella", alt:"2,327 m", night:"Night 1", pri:"sec", priL:"Secondary", desc:"Traditional hut above the Braies Valley with Croda del Becco views. Strong opening-night energy.", c1:"#6f9b9b", c2:"#3d6f6f"},
-  {name:"Rifugio Fanes", alt:"2,060 m", night:"Night 2", pri:"top", priL:"Top Priority", desc:"Consistently rated among the best on the AV1. Excellent food, warm service, beautiful plateau setting.", c1:"#f2c37a", c2:"#c98a2b"},
-  {name:"Rifugio Lagazuoi", alt:"2,752 m", night:"Night 3 · Highest", pri:"p1", priL:"#1 · Protect", desc:"The crown jewel. Perched on the highest point of the route with 360° views. Sunset and sunrise are extraordinary.", c1:"#f6d29a", c2:"#a86c17"},
-  {name:"Rifugio Nuvolau", alt:"2,575 m", night:"Night 4", pri:"top", priL:"Top Priority", desc:"A small stone building on the summit of a pointed peak — one of the most dramatically positioned refugios in the Alps.", c1:"#f2c37a", c2:"#c98a2b"},
-  {name:"Rifugio Città di Fiume", alt:"1,918 m", night:"Night 5", pri:"sec", priL:"Secondary", desc:"A well-run mid-route hut. Reliable quality — a good place to rest after the high central section.", c1:"#6f9b9b", c2:"#3d6f6f"},
-  {name:"Rifugio Coldai", alt:"2,191 m", night:"Night 6", pri:"top", priL:"Top Priority", desc:"Excellent setting beside a beautiful alpine lake with Pelmo on the horizon. One of the genuinely special nights.", c1:"#f2c37a", c2:"#c98a2b"},
-  {name:"Rifugio Vazzoler", alt:"1,714 m", night:"Night 7", pri:"sec", priL:"Lower", desc:"Sheltered and forested beneath the northwest face of Civetta. A quieter, warmer, more relaxed night.", c1:"#6f9b9b", c2:"#3d6f6f"},
-  {name:"Rifugio Carestiato", alt:"1,834 m", night:"Night 8", pri:"sec", priL:"Lower", desc:"Quiet and well-run, with a genuine mountain-community feel that grows the further south you travel.", c1:"#6f9b9b", c2:"#3d6f6f"},
-  {name:"Rifugio Pramperet", alt:"1,857 m", night:"Night 9", pri:"sec", priL:"Lower", desc:"One of the most remote and characterful huts on the route. Few visitors reach this far — tomorrow you finish.", c1:"#6f9b9b", c2:"#3d6f6f"}
+const refugios=[
+  {name:"Rifugio Biella",img:IMG.braies,alt:"2,327 m",night:"Night 1",desc:"Your first night in a real mountain hut, high above the Braies valley with Croda del Becco overhead. A classic Alpine interior and a great buzz as everyone starts the trail together.",feat:["Dorm & private rooms","Dinner + breakfast","Valley views"]},
+  {name:"Rifugio Fanes",img:IMG.fanes,alt:"2,060 m",night:"Night 2",desc:"One of the best-loved huts on the whole route — genuinely excellent food, warm service and a beautiful setting on the open plateau. A highlight stay.",feat:["Famous kitchen","Cozy & comfortable","Plateau setting"]},
+  {name:"Rifugio Lagazuoi",img:IMG.lagazuoi,alt:"2,752 m",night:"Night 3",desc:"The showpiece. Perched on the highest point of the trip with 360° views. Watch the towers turn gold at sunset from the terrace, then set an alarm for a sunrise you'll never forget.",feat:["Highest hut","Best sunset & sunrise","Terrace bar"]},
+  {name:"Rifugio Nuvolau",img:IMG.nuvolau,alt:"2,575 m",night:"Night 4",desc:"A small stone hut balanced right on a summit — one of the most dramatically located refuges in the Alps. Simple and characterful; the magic here is the location.",feat:["Summit setting","Iconic & intimate","Sunset views"]},
+  {name:"Rifugio Città di Fiume",img:IMG.pelmo,alt:"1,918 m",night:"Night 5",desc:"A comfortable, well-run hut with Monte Pelmo close by. A good place to rest and recover after the high central section, with reliably good food and beds.",feat:["Restful stop","Good food","Pelmo views"]},
+  {name:"Rifugio Coldai",img:IMG.coldai,alt:"2,191 m",night:"Night 6",desc:"A special one — beside a beautiful alpine lake with the great wall of Civetta behind. Arrive with time to walk to the water before dinner. Underrated and lovely.",feat:["Lakeside","Civetta views","Highlight stay"]},
+  {name:"Rifugio Vazzoler",img:IMG.civetta,alt:"1,714 m",night:"Night 7",desc:"Lower, warmer and sheltered in forest beneath the towering Civetta face. A quieter, relaxed night — a good one to eat well and rest the legs.",feat:["Warm & sheltered","Relaxed","Forest setting"]},
+  {name:"Rifugio Carestiato",img:IMG.pelmo,alt:"1,834 m",night:"Night 8",desc:"A quiet, friendly hut in the southern Dolomites where the crowds thin out. It has a real mountain-community feel — the further south you go, the more personal it gets.",feat:["Peaceful","Friendly","Southern Dolomites"]},
+  {name:"Rifugio Pramperet",img:IMG.civetta,alt:"1,857 m",night:"Night 9",desc:"One of the most remote and characterful huts on the route — few hikers reach this far. The last night on the trail, and it carries a bit of quiet meaning: tomorrow you finish.",feat:["Remote & wild","Characterful","Final trail night"]}
 ];
 
-const gallery = [
-  "Lagazuoi Sunset — the single best photo of the trip",
-  "Lagazuoi Sunrise — set the alarm",
-  "Lago di Braies — the iconic teal lake",
-  "Cinque Torri — five towers in a meadow",
-  "Lake Coldai — jewel-blue with Pelmo behind",
-  "Pelmo Views — the great isolated peak",
-  "The Finish Line — both of you, at the end",
-  "Refugio dinner — warm light, good faces"
+const gallery=[
+  {img:IMG.lagazuoi,cap:"Lagazuoi — best sunset & sunrise on the route"},
+  {img:IMG.braies,cap:"Lago di Braies — the teal lake at the start"},
+  {img:IMG.cinque,cap:"Cinque Torri — five towers in a meadow"},
+  {img:IMG.coldai,cap:"Lake Coldai, beneath Monte Civetta"},
+  {img:IMG.nuvolau,cap:"Rifugio Nuvolau — a hut on a summit"},
+  {img:IMG.pelmo,cap:"Monte Pelmo — the great peak of the south"},
+  {img:IMG.civetta,cap:"Monte Civetta — a mile-wide rock face"},
+  {img:IMG.venice,cap:"Venice — the gateway and the celebration"}
 ];
 
-/* map points: [lat, lon, label, type, extra] */
-const points = [
-  [45.4408,12.3155,"Venice","city","Gateway · arrival &amp; celebration"],
+const points=[
+  [45.4408,12.3155,"Venice","city","Gateway · arrival & celebration"],
   [46.6947,12.0855,"Lago di Braies","city","Trailhead · 1,496 m"],
   [46.6460,12.1130,"Rifugio Biella","stop","Night 1 · 2,327 m"],
-  [46.6060,12.0450,"Rifugio Fanes","top","Night 2 · 2,060 m · Top priority"],
-  [46.5220,12.0060,"Rifugio Lagazuoi","top","Night 3 · 2,752 m · #1 PROTECT"],
-  [46.4970,12.0370,"Rifugio Nuvolau","top","Night 4 · 2,575 m · Top priority"],
+  [46.6060,12.0450,"Rifugio Fanes","top","Night 2 · 2,060 m"],
+  [46.5220,12.0060,"Rifugio Lagazuoi","top","Night 3 · 2,752 m · highest"],
+  [46.4970,12.0370,"Rifugio Nuvolau","top","Night 4 · 2,575 m"],
   [46.4370,12.1060,"Rifugio Città di Fiume","stop","Night 5 · 1,918 m"],
-  [46.3930,12.0620,"Rifugio Coldai","top","Night 6 · 2,191 m · Top priority"],
+  [46.3930,12.0620,"Rifugio Coldai","top","Night 6 · 2,191 m"],
   [46.3520,12.0430,"Rifugio Vazzoler","stop","Night 7 · 1,714 m"],
   [46.3130,12.0520,"Rifugio Carestiato","stop","Night 8 · 1,834 m"],
   [46.3150,12.1500,"Rifugio Pramperet","stop","Night 9 · 1,857 m"],
-  [46.1390,12.2160,"Belluno","city","Finish line region · ~400 m"]
+  [46.1390,12.2160,"Belluno","city","Finish region · ~400 m"]
 ];
 
-/* ---------- RENDER ITINERARY ---------- */
-document.getElementById("timeline").innerHTML = days.map(d=>{
-  const metrics = d.km ? `<div class="metrics"><span>📏 ${d.km} km</span><span>▲ ${d.up} m</span><span>▼ ${d.dn} m</span></div>`:"";
-  const note = d.note ? `<div class="note">${d.note}</div>`:"";
-  return `<div class="day ${d.stage?'stage':''}">
-    <div class="num"><small>DAY</small><b>${d.n}</b></div>
-    <div><span class="tag">${d.tag}</span><h3>${d.title}</h3>
-    <ul>${d.items.map(i=>`<li>${i}</li>`).join("")}</ul>${metrics}${note}</div>
-  </div>`;
+document.getElementById("timeline").innerHTML=days.map(d=>{
+  let stats="";
+  if(d.hrs||d.km){stats='<div class="stats">'+
+    (d.hrs?`<span>⏱ ${d.hrs}</span>`:"")+
+    (d.km?`<span>📏 ${d.km} km</span>`:"")+
+    (d.up?`<span>▲ ${d.up} m</span>`:"")+
+    (d.dn?`<span>▼ ${d.dn} m</span>`:"")+'</div>';}
+  const sleep=`<div class="sleepline"><span><b>Meals:</b> ${d.meals||"—"}</span><span><b>Sleep:</b> ${d.sleep}</span></div>`;
+  const body=`<div class="body"><span class="tag">${d.tag}</span><h3>${d.title}</h3><p class="desc">${d.desc}</p>${stats}${sleep}</div>`;
+  return `<div class="day"><div class="photo" style="background-image:url('${d.img}')"><div class="badge"><small>DAY</small><b>${d.n}</b></div></div>${body}</div>`;
 }).join("");
 
-/* ---------- RENDER REFUGIOS ---------- */
-document.getElementById("refgrid").innerHTML = refugios.map(r=>`
+document.getElementById("refgrid").innerHTML=refugios.map(r=>`
   <div class="ref">
-    <div class="cap"><svg viewBox="0 0 300 96" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <rect width="300" height="96" fill="${r.c2}"/>
-      <path d="M0 96 L60 30 L110 70 L160 20 L210 66 L260 34 L300 70 L300 96 Z" fill="${r.c1}"/>
-      <path d="M160 20 L178 44 L160 38 L145 47 Z" fill="#fff" opacity=".85"/>
-    </svg></div>
-    <div class="body">
-      <span class="pri ${r.pri}">${r.priL}</span>
-      <h3>${r.name}</h3>
-      <div class="meta">${r.alt} · ${r.night}</div>
-      <p>${r.desc}</p>
-      <div class="links">
-        <a href="https://www.google.com/search?q=${encodeURIComponent(r.name+' Dolomiti booking')}" target="_blank" rel="noopener">Book ↗</a>
-        <a href="https://www.google.com/maps/search/${encodeURIComponent(r.name+' Dolomites')}" target="_blank" rel="noopener">Map ↗</a>
-      </div>
-    </div>
+    <div class="cap" style="background-image:url('${r.img}')"><span class="n">${r.night}</span><span class="alt">${r.alt}</span></div>
+    <div class="body2"><h3>${r.name}</h3><p>${r.desc}</p>
+    <div class="feat">${r.feat.map(f=>`<span>${f}</span>`).join("")}</div></div>
   </div>`).join("");
 
-/* ---------- RENDER GALLERY ---------- */
-document.getElementById("gallery").innerHTML = gallery.map(g=>
-  `<div class="shot"><span>📷 ${g}</span></div>`).join("");
+document.getElementById("gallery").innerHTML=gallery.map(g=>`
+  <div class="shot" data-full="${g.img}" data-cap="${g.cap}"><img src="${g.img}" alt="${g.cap}" loading="lazy"><div class="cap">${g.cap}</div></div>`).join("");
 
-/* ---------- MAP ---------- */
-const map = L.map('map', {scrollWheelZoom:false}).setView([46.45,12.10], 9);
-L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{
-  maxZoom:17, attribution:'© OpenTopoMap (CC-BY-SA)'}).addTo(map);
+const lb=document.getElementById("lb"),lbimg=document.getElementById("lbimg"),lbcap=document.getElementById("lbcap");
+document.querySelectorAll(".shot").forEach(s=>s.addEventListener("click",()=>{lbimg.src=s.dataset.full;lbcap.textContent=s.dataset.cap;lb.style.display="flex";}));
+lb.addEventListener("click",()=>lb.style.display="none");
 
-const colors={city:"#2b6cb0", stop:"#2e6b6b", top:"#c98a2b"};
-const bounds=[];
-points.forEach(p=>{
-  const [lat,lon,label,type,extra]=p;
-  bounds.push([lat,lon]);
-  L.circleMarker([lat,lon],{radius:type==='top'?9:7,color:"#fff",weight:2,
-    fillColor:colors[type],fillOpacity:1})
-    .addTo(map)
-    .bindPopup(`<b>${label}</b><br>${extra}`);
-});
-// route line through refugios (skip Venice endpoints for the trail line)
-const trail = points.slice(1).map(p=>[p[0],p[1]]);
-L.polyline(trail,{color:"#c98a2b",weight:3,opacity:.7,dashArray:"6 6"}).addTo(map);
-map.fitBounds(bounds,{padding:[30,30]});
+const map=L.map('map',{scrollWheelZoom:false}).setView([46.45,12.10],9);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{maxZoom:18,attribution:'© OpenStreetMap, © CARTO'}).addTo(map);
+const colors={city:"#2b6cb0",stop:"#26635f",top:"#c1852f"};const bounds=[];
+points.forEach(p=>{const[lat,lon,label,type,extra]=p;bounds.push([lat,lon]);
+  L.circleMarker([lat,lon],{radius:type==='top'?9:7,color:"#fff",weight:2.5,fillColor:colors[type],fillOpacity:1}).addTo(map).bindPopup(`<b>${label}</b><br>${extra}`);});
+L.polyline(points.slice(1).map(p=>[p[0],p[1]]),{color:"#c1852f",weight:3,opacity:.75,dashArray:"7 7"}).addTo(map);
+map.fitBounds(bounds,{padding:[36,36]});
+
+const barEl=document.getElementById("bar");
+addEventListener("scroll",()=>{const h=document.documentElement;barEl.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+"%";});
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add("in")}),{threshold:.1});
+document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
 </script>
 </body>
 </html>
